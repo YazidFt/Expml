@@ -23,23 +23,19 @@ Preprocessing:
 ```r
 > library(caret)
 ```
-Le chargement a nécessité le package : lattice
-Le chargement a nécessité le package : ggplot2
-
-Now we delete columns that contains missing values
+We delete columns that contains missing values:
 
 ```r
-buildD <- buildD[, colSums(is.na(buildD)) == 0]
-buildT <-  buildT[, colSums(is.na(buildT)) == 0]
+>buildD <- buildD[, colSums(is.na(buildD)) == 0]
+>buildT <-  buildT[, colSums(is.na(buildT)) == 0]
 ```
-we also delete the ID column
+we also delete the ID column:
 
 ```r
 > buildD <- buildD[,-c(1)]
 > buildT <- buildT[,-c(1)]
 ```
-
-We split the training data into trainingSet(70%) and a set for validating(30%)
+We split the training data into trainingSet(70%) and a set for validating(30%):
 
 ```r
 > inTrain <- createDataPartition(y=buildD$classe, p=0.7, list=FALSE)
@@ -50,66 +46,59 @@ We split the training data into trainingSet(70%) and a set for validating(30%)
 Building the predictive model:
 -----------------------------
 
-By using Random Forest algorithme and caret package (5-folds cross validation)
+By using Random Forest algorithme and caret package (5-folds cross validation):
 
 ```r
-control <- trainControl(method = "cv", number = 5)
-modFit <- train(classe ~ ., data = trainingV, method = "rf", trControl=control)
+>control <- trainControl(method = "cv", number = 5)
+>modFit <- train(classe ~ ., data = trainingV, method = "rf", trControl=control)
 ```
 
-#Predict outcomes and print confusion matrix using validating set
+Predict outcomes and print confusion matrix using validating set:
 
 ```r
- predict0 <- predict(modFit, valid)
- confusionMatrix(validatingv$classe, predict0))
+>predict0 <- predict(modFit, valid)
+>confusionMatrix(validatingv$classe, predict0))
 ```
 
 
 Prediction on the testing set (buildT):
 ---------------------------------------
 
+```r
 (predict(modFit, buidT))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
