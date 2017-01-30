@@ -2,22 +2,107 @@
 title: "Practical Machine learning Project"
 author: "Fattouri"
 date: "30 janvier 2017"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+Loading Data:
+-------------
+
+using the commands:
+
+```r
+  buildD <- read.csv('./data/pml-training.csv')
+  buildT <- read.csv('./data/pml-testing.csv')
 ```
 
-## R Markdown
+Preprocessing:
+--------------
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```r
+> library(caret)
 ```
+Le chargement a nécessité le package : lattice
+Le chargement a nécessité le package : ggplot2
+
+Now we delete columns that contains missing values
+
+```r
+buildD <- buildD[, colSums(is.na(buildD)) == 0]
+buildT <-  buildT[, colSums(is.na(buildT)) == 0]
+```
+we also delete the ID column
+
+```r
+> buildD <- buildD[,-c(1)]
+> buildT <- buildT[,-c(1)]
+```
+
+We split the training data into trainingSet(70%) and a set for validating(30%)
+
+```r
+> inTrain <- createDataPartition(y=buildD$classe, p=0.7, list=FALSE)
+> trainingV <- buildD[inTrain,]
+> validatingV <- buildD[-inTrain,]
+```
+
+Building the predictive model:
+-----------------------------
+
+By using Random Forest algorithme and caret package (5-folds cross validation)
+
+```r
+control <- trainControl(method = "cv", number = 5)
+modFit <- train(classe ~ ., data = trainingV, method = "rf", trControl=control)
+```
+
+#Predict outcomes and print confusion matrix using validating set
+
+```r
+ predict0 <- predict(modFit, valid)
+ confusionMatrix(validatingv$classe, predict0))
+```
+
+
+Prediction on the testing set (buildT):
+---------------------------------------
+
+(predict(modFit, buidT))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Including Plots
 
